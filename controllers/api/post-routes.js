@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const { Post, User } = require('../../models');
+const { Post, User, Comment } = require('../../models');
 
 router.get('/', (req ,res) => {
     Post.findAll({
-        attributes: ['id', 'post_url', 'title', 'created_at'],
+        attributes: ['id', 'post_content', 'title', 'created_at'],
         order: [['created_at', 'DESC']],
         include: [
             {
@@ -50,7 +50,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     Post.create({
         title: req.body.title,
-        post_url: req.body.post_url,
+        post_url: req.body.post_content,
         user_id: req.body.user_id
     }).then(dbPostData => {
         res.json(dbPostData);
