@@ -1,6 +1,8 @@
 const router = require('express').Router();
+const session = require('express-session');
 const { Module } = require('module');
 const { User } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 router.get('/', (req, res) => {
     User.findAll({
@@ -36,7 +38,13 @@ router.post('/', (req, res) => {
         email: req.body.email,
         password: req.body.password
     }).then(dbUserData => {
-        return res.json(dbUserData);
+        req.session.save(() => {
+            req.session.user_id = dbUserData.id;
+            req.session.username = dbUserData.username;
+            req.session.loggedIn = true;
+
+            res.json(dbUserData);
+        });
     }).catch(err => {
         console.log(err)
         res.status(500).json(err);
@@ -49,7 +57,7 @@ router.post('/login', (req, res) => {
             email: req.body.email
         }
     }).then(dbUserData => {
-        if (dbUserData) {
+        if (!dbUserData) {
             return res.status(404).json({ message: 'No user with that email address exists! '});
         }
 
@@ -57,12 +65,28 @@ router.post('/login', (req, res) => {
         if (!validPassword) {
             return res.status(400).json({ message: 'Incorrect password! '});
         }
+        req.session.save(() => {
+            req.session.user_id = dbUserData.id;
+            req.session.username = dbUserData.username;
+            req.session.loggedIn = true;
+            console.log("Session HJere:",req.session.loggedIn);
+            res.json({ user: dbUserData, message: 'You are now logged in!' })
+        });
+    });
+});
 
-        res.json({ user: dbUserData, message: 'You are now logged in!' })
-    })
+router.post('/logout', (req, res) => {
+    console.log("Session HJere:",req.session.loggedIn);
+    if (req.session.loggedIn) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        });
+    } else {
+        res.status(404).end();
+    }
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
     User.update(req.body, {
         individualHooks: true,
         where: {
@@ -79,7 +103,7 @@ router.put('/:id', (req, res) => {
     })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     User.destroy({
         where: {
             id: req.params.id
