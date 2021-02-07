@@ -1,10 +1,10 @@
 <div class="comments">
     {{#each this}}
-    <section class="comment">
-        <div class="meta">
+    <section class="comment card">
+        <div class="comment-card-header">
             {{user.username}} on {{format_date created_at}}
         </div>
-        <div class="text">
+        <div class="card-body">
             {{comment_text}}
         </div>
     </section>

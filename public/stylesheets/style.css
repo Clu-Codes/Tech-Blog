@@ -176,6 +176,23 @@
     border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
     font-size: 20px;
   }
+
+  .comment-card-header {
+    color: var(--primary);
+    background-color: var(--dark);
+    padding: 1.5%;
+    border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
+    font-size: 18px;
+  }
+
+  .input-card-header {
+    color: var(--primary);
+    background-color: var(--dark);
+    padding: 1.5%;
+    border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
+    font-size: 18px;
+    margin-top: 1.5%;
+  }
   
   .publish-date {
       display: flex;
@@ -196,7 +213,7 @@
   
   .form-label {
     font-size: 1.1rem;
-    margin: 0 0 0 5px;
+    margin: 0 0 0 0px;
     font-weight: bold;
   }
   
@@ -204,6 +221,15 @@
     width: 100%;
     padding: 1%;
     margin: 5px 0;
+    font-size: 1.2rem;
+    border: 2px solid var(--light-dark);
+    border-radius: var(--border-radius);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 1%;
+    margin: 5px 0 15px 0;
     font-size: 1.2rem;
     border: 2px solid var(--light-dark);
     border-radius: var(--border-radius);
