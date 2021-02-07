@@ -64,8 +64,8 @@ router.get('/edit/:id', withAuth, (req, res) => {
         if (!dbPostData) {
             res.status(404).json({ message: 'No post with that id was found.' });
         }
-        const posts = dbPostData.get({ plain: true });
-        res.render('edit-posts', { posts, loggedIn: true });
+        const post = dbPostData.get({ plain: true });
+        res.render('edit-posts', { post, loggedIn: true });
     }).catch(err => {
         res.status(500).json(err);
     });

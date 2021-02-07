@@ -63,7 +63,8 @@ router.post('/', withAuth, (req, res) => {
 router.put('/:id', withAuth, (req, res) => {
     Post.update(
         {
-            title: req.body.title
+            title: req.body.title,
+            post_content: req.body.comment
         },
         {
             where: {
@@ -74,6 +75,7 @@ router.put('/:id', withAuth, (req, res) => {
         if (!dbPostData) {
             return res.status(404).json({ message: 'No post with that id was found!' })
         }
+        console.log('===========', dbPostData)
         return res.json(dbPostData)
     }).catch(err => {
         res.status(500).json(err);
@@ -89,8 +91,9 @@ router.delete('/:id', withAuth, (req, res) => {
         if (!dbPostData) {
             res.status(404).json({ message: 'No post with that id was found!' })
         }
-        return res.status(dbPostData);
+        return res.json(dbPostData);
     }).catch(err => {
+        console.log(err)
         return res.status(500).json(err);
     });
 });
