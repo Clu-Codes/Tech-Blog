@@ -11,4 +11,22 @@ async function logout() {
     }
 }
 
+
+function idleTimer() {
+    var time;
+
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;
+    window.onclick = resetTimer;
+    window.onscroll = resetTimer;
+    window.onkeypress = resetTimer;
+
+    function resetTimer() {
+        clearTimeout(time);
+        time = setTimeout(logout, (1000 * 60) * 15);
+    }
+}
+
+idleTimer();
+
 document.querySelector('#logout').addEventListener('click', logout);
